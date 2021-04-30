@@ -56,6 +56,7 @@ public class MyCalcView extends JFrame implements ActionListener {
 
             for (int i = 0; i <= 9; i++) {
                jb_btns[i] = new JButton(String.valueOf(i));
+               jb_btns[i].setBackground(new Color(255, 255, 255));
             }
 
             jb_btns[10] = new JButton("+");
@@ -72,6 +73,7 @@ public class MyCalcView extends JFrame implements ActionListener {
 
             for (int i = 0; i <= 19; i++) {
                jb_btns[i].setFont(new Font("Arial", Font.BOLD, 35));
+               jb_btns[i].setBackground(new Color(255, 255, 255));
             }
 
             // 버튼 글자 색상지정

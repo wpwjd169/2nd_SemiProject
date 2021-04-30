@@ -1,5 +1,6 @@
 package calendar;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -37,12 +38,12 @@ public class EastWork extends JFrame implements ActionListener {
    Font font = new Font("맑은 고딕", Font.BOLD, 15);
    Font font_time = new Font("맑은 고딕", Font.PLAIN, 11);
    //db에 연걸하기 위한 필요자원 선언
-	Connection con = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-	DBConnectionMgr dbMgr = null;
-	Map<String, String> callData = null;
-	Main80 m80 =null;
+   Connection con = null;
+   PreparedStatement pstmt = null;
+   ResultSet rs = null;
+   DBConnectionMgr dbMgr = null;
+   Map<String, String> callData = null;
+   Main80 m80 =null;
    
    
    public String time_work = null;
@@ -67,6 +68,7 @@ public class EastWork extends JFrame implements ActionListener {
    JButton work = new JButton("출근");
    JButton leave = new JButton("퇴근");
 
+
    int workrow = 0;
    int leaverow = 0;
 
@@ -82,11 +84,11 @@ public class EastWork extends JFrame implements ActionListener {
       }
    }
 
-	public EastWork(Main80 m80) {
-		this.m80 = m80;
-		callData = m80.lv.check_ok;
-		initDisplay();
-	}
+   public EastWork(Main80 m80) {
+      this.m80 = m80;
+      callData = m80.lv.check_ok;
+      initDisplay();
+   }
 
    public void initDisplay() {
 
@@ -102,12 +104,16 @@ public class EastWork extends JFrame implements ActionListener {
       ljsp.setBounds(200, 20, 150, 300);
       work.setBounds(50, 340, 140, 50);
       work.setFont(font);
+      work.setBackground(new Color(255, 255, 255));
       leave.setBounds(210, 340, 140, 50);
       leave.setFont(font);
+      leave.setBackground(new Color(255, 255, 255));
       wjtb.getTableHeader().setReorderingAllowed(false); // 이동 불가
       wjtb.getTableHeader().setResizingAllowed(false); // 크기 조절 불가
+      wjtb.setBackground(new Color(255, 255, 255));
       ljtb.getTableHeader().setReorderingAllowed(false); // 이동 불가
       ljtb.getTableHeader().setResizingAllowed(false); // 크기 조절 불가
+      ljtb.setBackground(new Color(255, 255, 255));
       //wjtb.setFont(font_time);// ?? 테이블은 폰트 적용이 안되고 있음
       
       this.add(wjsp);
@@ -154,33 +160,33 @@ public class EastWork extends JFrame implements ActionListener {
 
    }
    public void recordWork() {//근태기록 저장
-		StringBuilder sql_insert = new StringBuilder();
-		sql_insert.append("insert into record_work_data(SELECT (SELECT member_code From account_info where id =?), ?, ? FROM dual)");
-		dbMgr = DBConnectionMgr.getInstance();
-		try {
-			con = dbMgr.getConnection();
-			pstmt = con.prepareStatement(sql_insert.toString());
-			int i = 1;
-			pstmt.setString(i++, callData.get("id"));
-			pstmt.setString(i++, workdata);
-			pstmt.setString(i++, leavedata);
-		} catch (SQLException se) {
-			se.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		try {
-			int result = pstmt.executeUpdate(); //executeUpdate()는 영향을 받는 row(세로)줄을 숫자로 표시함. 예를 들어 추가 되면 1개의 로우가 반응되어 1의  값을 가짐. 실패하면 0을 받음.
-			if(result > 0) {
-				System.out.println("ok");
-			}else {
-				System.out.println("최종 등록 실패");
-			}
-	} catch (SQLException e) {
-		e.printStackTrace();
-	} finally {
-		dbMgr.freeConnection(con, pstmt); //사용한 건 자원 반납.
-	}
-		
-	}
+      StringBuilder sql_insert = new StringBuilder();
+      sql_insert.append("insert into record_work_data(SELECT (SELECT member_code From account_info where id =?), ?, ? FROM dual)");
+      dbMgr = DBConnectionMgr.getInstance();
+      try {
+         con = dbMgr.getConnection();
+         pstmt = con.prepareStatement(sql_insert.toString());
+         int i = 1;
+         pstmt.setString(i++, callData.get("id"));
+         pstmt.setString(i++, workdata);
+         pstmt.setString(i++, leavedata);
+      } catch (SQLException se) {
+         se.printStackTrace();
+      } catch (Exception e) {
+         e.printStackTrace();
+      }      try {
+         int result = pstmt.executeUpdate(); //executeUpdate()는 영향을 받는 row(세로)줄을 숫자로 표시함. 예를 들어 추가 되면 1개의 로우가 반응되어 1의  값을 가짐. 실패하면 0을 받음.
+         if(result > 0) {
+            System.out.println("ok");
+         }else {
+            System.out.println("최종 등록 실패");
+         }
+   } catch (SQLException e) {
+      e.printStackTrace();
+   } finally {
+      dbMgr.freeConnection(con, pstmt); //사용한 건 자원 반납.
+   }
+      
+   }
 
 }
